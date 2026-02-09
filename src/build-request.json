@@ -1,0 +1,103 @@
+{
+  "kind": "build_request",
+  "title": "Replace Google Maps ground with procedurally generated terrain and buildings",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-7",
+      "text": "Remove the Google Maps dependency and configuration gating so the simulator runs without requiring VITE_GOOGLE_MAPS_API_KEY.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "Make it again but generate random terrain and buildings instead of Google maps"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The app no longer reads or requires VITE_GOOGLE_MAPS_API_KEY to start the simulation.",
+        "The configuration check/error UI related to Google Maps is removed from the main sim view.",
+        "No network requests to Google Maps endpoints occur during normal gameplay (start, fly, reset)."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Replace the map-textured ground implementation with a procedurally generated terrain surface that is generated locally and updates as the aircraft moves.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "Make it again but generate random terrain and buildings instead of Google maps"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The ground is rendered from locally generated terrain (not fetched textures).",
+        "Terrain visibly varies (elevation/shape changes) rather than being a flat plane.",
+        "As the aircraft moves across the world, the rendered terrain updates/extends around the aircraft so the plane does not fly beyond the generated environment.",
+        "Performance remains interactive (no large frame hitches when terrain updates)."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Add procedurally generated buildings/structures placed on the terrain, with density/placement varying across the world, and ensure they update/stream consistently as the aircraft moves.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "Make it again but generate random terrain and buildings instead of Google maps"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Buildings/structures are visible above the terrain and are distributed in a way that appears random (not a single repeated object).",
+        "Buildings update/stream as the aircraft moves so new areas contain new buildings without requiring a page reload.",
+        "Buildings do not spawn directly intersecting the aircraft spawn location (immediate collision/overlap at reset/start is avoided)."
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Ensure the procedural world generation is deterministic for a given seed and integrate it with the sim reset flow (reset returns the aircraft to spawn and the world generation behavior is consistent and predictable).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "Make it again but generate random terrain and buildings instead of Google maps"
+        ]
+      },
+      "acceptanceCriteria": [
+        "With a fixed seed, flying to the same approximate world location produces the same terrain/building layout across reloads during a session.",
+        "Reset returns the aircraft to the initial spawn state and does not leave behind previously generated chunks/objects in the scene (no duplicate stacked terrain/buildings).",
+        "If the seed is regenerated on reset, the new world layout is visibly different after reset; if the seed is kept, the world layout remains the same after reset (choose one behavior and apply consistently)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui (compose instead).",
+    "Backend must remain single-actor (all Motoko logic in backend/main.mo); only add migration.mo if persistent state schema changes are required."
+  ],
+  "nonGoals": [
+    "Re-implementing real-world map imagery or any external map provider integration.",
+    "Adding multiplayer/real-time features.",
+    "Adding backend persistence for terrain/buildings or storing generated world state on-chain."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}

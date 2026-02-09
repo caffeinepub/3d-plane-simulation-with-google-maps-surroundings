@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "Browser-based 3D plane/flight simulation app that renders a procedurally generated world (random terrain and buildings) as the surrounding environment while flying (no Google Maps dependency).",
+  "architectural_notes": [
+    "Surrounding environment will be generated procedurally (random terrain + buildings) rather than using Google Maps imagery/data."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-implement-a-browser-based-3d-plane-flight-simulation-scene-react-three-fiber-three-js-with-basic-flight-controls-pitch-roll-yaw-throttle-and-a-third-person-chase-camera-that-follows-the-aircraft",
+      "title": "Implement a browser-based 3D plane flight simulation scene (React Three Fiber/Three.js) with basic flight controls (pitch, roll, yaw, throttle) and a third-person chase camera that follows the aircraft.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-integrate-google-maps-imagery-data-to-render-the-surrounding-environment-during-flight-so-the-visible-ground-terrain-context-updates-as-the-plane-moves-across-latitude-longitude",
+      "title": "Integrate Google Maps imagery/data to render the surrounding environment during flight, so the visible ground/terrain context updates as the plane moves across latitude/longitude.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-on-screen-flight-hud-displaying-at-minimum-airspeed-or-simulated-speed-altitude-heading-throttle-percentage-and-current-lat-long-hud-must-update-in-real-time-while-flying",
+      "title": "Add an on-screen flight HUD displaying at minimum: airspeed (or simulated speed), altitude, heading, throttle percentage, and current lat/long; HUD must update in real time while flying.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-an-in-app-start-reset-flow-a-start-screen-or-overlay-with-brief-control-instructions-and-a-reset-action-that-returns-the-aircraft-to-an-initial-spawn-position-and-default-speed-altitude",
+      "title": "Provide an in-app start/reset flow: a start screen (or overlay) with brief control instructions, and a reset action that returns the aircraft to an initial spawn position and default speed/altitude.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-coherent-visual-theme-across-the-app-typography-color-palette-spacing-panels-suitable-for-an-aviation-simulator-ui-avoid-a-blue-purple-dominant-palette",
+      "title": "Apply a coherent visual theme across the app (typography, color palette, spacing, panels) suitable for an aviation simulator UI; avoid a blue/purple-dominant palette.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-generated-static-image-assets-icons-for-the-hud-e-g-compass-heading-indicator-and-throttle-icon-and-render-them-from-frontend-public-assets-generated-not-via-the-backend",
+      "title": "Add generated static image assets (icons) for the HUD (e.g., compass/heading indicator and throttle icon) and render them from frontend/public/assets/generated (not via the backend).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-google-maps-dependency-and-configuration-gating-so-the-simulator-runs-without-requiring-vite-google-maps-api-key",
+      "title": "Remove the Google Maps dependency and configuration gating so the simulator runs without requiring VITE_GOOGLE_MAPS_API_KEY.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-map-textured-ground-implementation-with-a-procedurally-generated-terrain-surface-that-is-generated-locally-and-updates-as-the-aircraft-moves",
+      "title": "Replace the map-textured ground implementation with a procedurally generated terrain surface that is generated locally and updates as the aircraft moves.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-procedurally-generated-buildings-structures-placed-on-the-terrain-with-density-placement-varying-across-the-world-and-ensure-they-update-stream-consistently-as-the-aircraft-moves",
+      "title": "Add procedurally generated buildings/structures placed on the terrain, with density/placement varying across the world, and ensure they update/stream consistently as the aircraft moves.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-procedural-world-generation-is-deterministic-for-a-given-seed-and-integrate-it-with-the-sim-reset-flow-reset-returns-the-aircraft-to-spawn-and-the-world-generation-behavior-is-consistent-and-predictable",
+      "title": "Ensure the procedural world generation is deterministic for a given seed and integrate it with the sim reset flow (reset returns the aircraft to spawn and the world generation behavior is consistent and predictable).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Implement a 3D plane/flight simulation in the browser",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Replace Google Maps surroundings with procedurally generated random terrain and buildings that update as the plane moves",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "3d",
+  "projectName": "3D plane simulation with Google Maps surroundings",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

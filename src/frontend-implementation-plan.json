@@ -1,0 +1,132 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Procedural terrain and building world replacing Google Maps in flight sim",
+  "requirements": [
+    {
+      "id": "REQ-7",
+      "summary": "Remove Google Maps API key gating and all Google Maps tile fetching so the sim runs fully offline/local.",
+      "acceptanceCriteria": [
+        "The app no longer reads or requires VITE_GOOGLE_MAPS_API_KEY to start the simulation.",
+        "The configuration check/error UI related to Google Maps is removed from the main sim view.",
+        "No network requests to Google Maps endpoints occur during normal gameplay (start, fly, reset)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/sim/FlightSimView.tsx",
+          "operation": "modify",
+          "description": "Remove the Google Maps configuration check (including getGoogleMapsApiKey usage) and the associated loading/error UI so the sim always renders and can start/reset without VITE_GOOGLE_MAPS_API_KEY."
+        },
+        {
+          "path": "frontend/src/sim/ui/StartOverlay.tsx",
+          "operation": "modify",
+          "description": "Update copy that references Google Maps/satellite imagery to reflect the new locally generated procedural terrain/buildings."
+        },
+        {
+          "path": "frontend/src/lib/googleMapsConfig.ts",
+          "operation": "delete",
+          "description": "Remove Google Maps API key reader to ensure the app no longer references VITE_GOOGLE_MAPS_API_KEY."
+        },
+        {
+          "path": "frontend/src/sim/maps/googleMaps.ts",
+          "operation": "delete",
+          "description": "Remove Google Maps tile-fetch utilities to eliminate Google Maps network calls during gameplay."
+        },
+        {
+          "path": "frontend/src/sim/maps/useMapTexture.ts",
+          "operation": "delete",
+          "description": "Remove the texture-fetch hook that triggers Google Maps tile requests as the aircraft moves."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Replace map-textured ground with a locally generated, streaming procedural terrain that updates around the aircraft.",
+      "acceptanceCriteria": [
+        "The ground is rendered from locally generated terrain (not fetched textures).",
+        "Terrain visibly varies (elevation/shape changes) rather than being a flat plane.",
+        "As the aircraft moves across the world, the rendered terrain updates/extends around the aircraft so the plane does not fly beyond the generated environment.",
+        "Performance remains interactive (no large frame hitches when terrain updates)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/sim/scene/MapGround.tsx",
+          "operation": "delete",
+          "description": "Remove the map-textured ground implementation that depends on fetched textures."
+        },
+        {
+          "path": "frontend/src/sim/scene/ProceduralWorld.tsx",
+          "operation": "create",
+          "description": "Add a Three.js/@react-three/fiber world component that renders chunked procedural terrain meshes around the aircraft and streams/removes chunks based on aircraft position to maintain interactive performance."
+        },
+        {
+          "path": "frontend/src/sim/world/noise.ts",
+          "operation": "create",
+          "description": "Implement lightweight deterministic 2D noise utilities (e.g., value/perlin-like noise and FBM helpers) used to generate terrain elevation locally without network requests."
+        },
+        {
+          "path": "frontend/src/sim/world/terrain.ts",
+          "operation": "create",
+          "description": "Implement terrain chunk generation (height sampling, mesh/geometry building, normals, and optional LOD) keyed by chunk coordinates and seed, designed for incremental updates to avoid frame hitches."
+        },
+        {
+          "path": "frontend/src/sim/scene/FlightScene.tsx",
+          "operation": "modify",
+          "description": "Wire the new ProceduralWorld component into the scene (replacing the removed MapGround) and pass aircraft position/seed inputs needed for terrain streaming."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Add deterministic, streaming procedural buildings/structures placed on terrain with varied density and safe spawn exclusion.",
+      "acceptanceCriteria": [
+        "Buildings/structures are visible above the terrain and are distributed in a way that appears random (not a single repeated object).",
+        "Buildings update/stream as the aircraft moves so new areas contain new buildings without requiring a page reload.",
+        "Buildings do not spawn directly intersecting the aircraft spawn location (immediate collision/overlap at reset/start is avoided)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/sim/world/buildings.ts",
+          "operation": "create",
+          "description": "Implement building/structure generation per terrain chunk (varied sizes/heights/materials and density variation) deterministically from seed+chunk coordinates, including an exclusion radius around the spawn location to avoid immediate overlap."
+        },
+        {
+          "path": "frontend/src/sim/scene/ProceduralWorld.tsx",
+          "operation": "modify",
+          "description": "Extend ProceduralWorld to instance/render chunk-local buildings (prefer instancing/merged geometries for performance) and stream them in/out in sync with terrain chunk lifecycle."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Make procedural generation deterministic per seed and integrate with reset so world and chunks cleanly reinitialize without duplicates.",
+      "acceptanceCriteria": [
+        "With a fixed seed, flying to the same approximate world location produces the same terrain/building layout across reloads during a session.",
+        "Reset returns the aircraft to the initial spawn state and does not leave behind previously generated chunks/objects in the scene (no duplicate stacked terrain/buildings).",
+        "If the seed is regenerated on reset, the new world layout is visibly different after reset; if the seed is kept, the world layout remains the same after reset (choose one behavior and apply consistently)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/sim/state/types.ts",
+          "operation": "modify",
+          "description": "Add a worldSeed (and any minimal related fields such as spawn position reference if needed) to SimState so procedural generation can be deterministic and controllable by the reset flow."
+        },
+        {
+          "path": "frontend/src/sim/state/useSimState.ts",
+          "operation": "modify",
+          "description": "Integrate world seed management with sim start/reset. Choose consistent behavior: regenerate the seed on reset so the world layout visibly changes after reset while remaining deterministic for a given seed during a run/session."
+        },
+        {
+          "path": "frontend/src/sim/world/prng.ts",
+          "operation": "create",
+          "description": "Add a deterministic seeded PRNG utility (stable across reloads within the same session when using the same seed) used by terrain/building generation for repeatable results."
+        },
+        {
+          "path": "frontend/src/sim/scene/ProceduralWorld.tsx",
+          "operation": "modify",
+          "description": "Ensure world streaming state is fully cleared/reinitialized on seed change/reset (e.g., by using React keys, internal maps cleared on seed updates, and disposing geometries/materials) to prevent duplicate stacked chunks/objects."
+        }
+      ]
+    }
+  ]
+}

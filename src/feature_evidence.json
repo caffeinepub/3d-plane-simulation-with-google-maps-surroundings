@@ -1,0 +1,89 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-remove-the-google-maps-dependency-and-configuration-gating-so-the-simulator-runs-without-requiring-vite-google-maps-api-key",
+      "featureTitle": "Remove the Google Maps dependency and configuration gating so the simulator runs without requiring VITE_GOOGLE_MAPS_API_KEY.",
+      "files": [
+        "frontend/src/lib/googleMapsConfig.ts",
+        "frontend/src/sim/FlightSimView.tsx",
+        "frontend/src/sim/maps/googleMaps.ts",
+        "frontend/src/sim/maps/useMapTexture.ts",
+        "frontend/src/sim/ui/StartOverlay.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-replace-the-map-textured-ground-implementation-with-a-procedurally-generated-terrain-surface-that-is-generated-locally-and-updates-as-the-aircraft-moves",
+      "featureTitle": "Replace the map-textured ground implementation with a procedurally generated terrain surface that is generated locally and updates as the aircraft moves.",
+      "files": [
+        "frontend/src/sim/scene/FlightScene.tsx",
+        "frontend/src/sim/scene/MapGround.tsx",
+        "frontend/src/sim/scene/ProceduralWorld.tsx",
+        "frontend/src/sim/world/noise.ts",
+        "frontend/src/sim/world/terrain.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-procedurally-generated-buildings-structures-placed-on-the-terrain-with-density-placement-varying-across-the-world-and-ensure-they-update-stream-consistently-as-the-aircraft-moves",
+      "featureTitle": "Add procedurally generated buildings/structures placed on the terrain, with density/placement varying across the world, and ensure they update/stream consistently as the aircraft moves.",
+      "files": [
+        "frontend/src/sim/scene/ProceduralWorld.tsx",
+        "frontend/src/sim/world/buildings.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-procedural-world-generation-is-deterministic-for-a-given-seed-and-integrate-it-with-the-sim-reset-flow-reset-returns-the-aircraft-to-spawn-and-the-world-generation-behavior-is-consistent-and-predictable",
+      "featureTitle": "Ensure the procedural world generation is deterministic for a given seed and integrate it with the sim reset flow (reset returns the aircraft to spawn and the world generation behavior is consistent and predictable).",
+      "files": [
+        "frontend/src/sim/scene/ProceduralWorld.tsx",
+        "frontend/src/sim/state/types.ts",
+        "frontend/src/sim/state/useSimState.ts",
+        "frontend/src/sim/world/prng.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

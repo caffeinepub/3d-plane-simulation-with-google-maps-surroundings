@@ -1,0 +1,57 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-09T01:38:41.288Z",
+  "summary": "Procedural terrain + buildings and seeded generation were added and integrated into the Three.js scene, but the diff does not convincingly remove the Google Maps dependency/config usage end-to-end (API key accessors and Google Maps modules still exist/are modified), so REQ-7 is not fully satisfied based on the provided evidence.",
+  "missing_requirements": [
+    {
+      "id": "REQ-7",
+      "requirement": "Remove the Google Maps dependency and configuration gating so the simulator runs without requiring VITE_GOOGLE_MAPS_API_KEY.",
+      "reason": "Although the main sim view no longer shows a Google Maps gating UI, the diff still contains Google Maps integration modules and API-key access utilities (and they are modified, not removed). From the diff summary alone, it is not verifiable that the app no longer reads/requires VITE_GOOGLE_MAPS_API_KEY, nor that Google Maps endpoint requests cannot occur during gameplay (even if the new scene uses procedural terrain).",
+      "evidence": [
+        "frontend/src/lib/googleMapsConfig.ts",
+        "frontend/src/config.ts (mentioned in frontend-file-summaries.txt as exporting getGoogleMapsApiKey)",
+        "frontend/src/sim/maps/googleMaps.ts",
+        "frontend/src/sim/maps/useMapTexture.ts",
+        "frontend/src/sim/scene/MapGround.tsx",
+        "frontend/src/sim/FlightSimView.tsx (shows removal of gating UI but not removal of dependency)"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Changed/expanded flight physics model (lift/drag/ground collision tweaks) beyond procedural-world replacement scope.",
+      "reason": "BuildRequest focuses on replacing Google Maps ground with procedural terrain/buildings and deterministic seeding/reset integration; it does not request flight-model tuning changes.",
+      "evidence": [
+        "frontend/src/sim/physics/useSimpleFlightModel.ts"
+      ]
+    },
+    {
+      "description": "Added/changed StartOverlay marketing copy and footer link content.",
+      "reason": "Not requested by any requirement; UI copy changes are unrelated to the procedural world/map removal requirements.",
+      "evidence": [
+        "frontend/src/sim/ui/StartOverlay.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.68,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/src/lib/googleMapsConfig.ts",
+    "frontend/src/sim/FlightSimView.tsx",
+    "frontend/src/sim/maps/googleMaps.ts",
+    "frontend/src/sim/maps/useMapTexture.ts",
+    "frontend/src/sim/physics/useSimpleFlightModel.ts",
+    "frontend/src/sim/scene/FlightScene.tsx",
+    "frontend/src/sim/scene/MapGround.tsx",
+    "frontend/src/sim/scene/ProceduralWorld.tsx",
+    "frontend/src/sim/state/types.ts",
+    "frontend/src/sim/state/useSimState.ts",
+    "frontend/src/sim/ui/StartOverlay.tsx",
+    "frontend/src/sim/world/buildings.ts",
+    "frontend/src/sim/world/noise.ts",
+    "frontend/src/sim/world/prng.ts",
+    "frontend/src/sim/world/terrain.ts",
+    "project_state.json"
+  ]
+}
